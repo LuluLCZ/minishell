@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/02 21:01:18 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/02 21:03:43 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void		builtin_cd(t_info *info)
 	getcwd(buf, 512);
 	dir = opendir(info->line_tab[1]);
 	if (info->line_tab[1] == NULL || (ft_strcmp(info->line_tab[1], "~")) == 0)
+	{
+		
 		chdir(get_env(info->env, "HOME"));
 	else if (ft_strcmp(info->line_tab[1], "-") == 0)
 	{
