@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/02 21:03:43 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/03 17:35:34 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,21 @@ void		builtin_cd(t_info *info)
 	dir = opendir(info->line_tab[1]);
 	if (info->line_tab[1] == NULL || (ft_strcmp(info->line_tab[1], "~")) == 0)
 	{
-		
+		info = get_env_num(info, "OLDPWD", buf);
 		chdir(get_env(info->env, "HOME"));
+		info= get_env_num(info, "PWD", get_env(info->env, "HOME"));
+	}
+	else if (ft_strcmp(info->line_tab[1], "/") == 0)
+	{
+		info = get_env_num(info, "OLDPWD", buf);
+		chdir("/");
+		info= get_env_num(info, "PWD", "/");
+	}
 	else if (ft_strcmp(info->line_tab[1], "-") == 0)
 	{
 		tmp = get_env(info->env, "OLDPWD");
-		// new_tmp = pwd_cwd(tmp);
-		// printf("\n%s\n", new_tmp);
+		info = get_env_num(info, "PWD", tmp);
+		info = get_env_num(info, "OLDPWD", buf);
 		chdir(tmp);
 	}
 	else if (dir == NULL)
@@ -69,10 +77,13 @@ void		builtin_cd(t_info *info)
 	}
 	else
 	{
-		tmp = ft_strjoin(buf, "/");
+		tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
+		info = get_env_num(info, "OLDPWD", buf);
 		chdir(ft_strjoin(tmp, info->line_tab[1]));
+		getcwd(buf, 512);
+		info = get_env_num(info, "PWD", buf);		
 	}
-	dir == NULL ? 0 : closedir(dir);
+	// dir == NULL ? 0 : closedir(dir);
 }
 
 int		builtin(t_info *info)
@@ -84,7 +95,11 @@ int		builtin(t_info *info)
 			builtin_cd(info);
 			return (1);
 		}
-	// if (ft_strcmp(info->line_tab[0], "echo"))
+		else if (ft_strcmp(info->line_tab[0], "echo") == 0)
+		{
+			bi_echo(info);
+			return (1);
+		}
 	// if (ft_strcmp(info->line_tab[0], "exit"))
 		else if (ft_strcmp(info->line_tab[0], "env") == 0)
 		{

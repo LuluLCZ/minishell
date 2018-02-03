@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/02 20:40:36 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/03 17:33:51 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_info
 	struct s_info	*prev;
 	char			*command;
 	char			**line_tab;
+	char			**quotes;
 	char			*line;
 	char			**env;
 	struct s_info	*next;
@@ -53,6 +54,7 @@ void				free_info(t_info *info);
 char				*get_env(char **env, char *elem);
 int					builtin(t_info *info);
 void				builtin_env_one(t_info *info);
-
+t_info				*get_env_num(t_info *info, char *elem, char *new_elem);
+void				bi_echo(t_info *info);
 
 #endif

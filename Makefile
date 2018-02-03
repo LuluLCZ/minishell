@@ -6,7 +6,7 @@
 #    By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 11:29:27 by llacaze           #+#    #+#              #
-#    Updated: 2018/02/02 20:41:27 by llacaze          ###   ########.fr        #
+#    Updated: 2018/02/03 17:34:33 by llacaze          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC = 		main.c \
 			get_next_line.c \
 			init.c\
 			builtin.c\
-			builtin_env.c
+			builtin_env.c\
+			bi_echo.c
 
 OBJ = $(SRC:.c=.o)
 

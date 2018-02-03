@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/02 20:57:47 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/03 17:37:20 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_info		*get_command(t_info *info, char **env)
 {
 	char	*path;
 
+	info->line = ft_strtrim(info->line);
 	info->line_tab = ft_strsplit(info->line, ' ');
 	path = get_env(env, "PATH");
 	info->command = ft_get_path(path, info->line_tab[0]);
