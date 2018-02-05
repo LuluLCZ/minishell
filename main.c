@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/03 17:37:20 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/05 18:04:42 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ char	*ft_get_path(char *str, char *command)
 			free(tab);
 			return (tmp);
 		}
-		i++;
 	}
-	
 	return (NULL);
 }
 
@@ -84,7 +82,15 @@ t_info		*exe(t_info *info)
 		perror("fork");
 	else if (child_pid == 0)
 	{
-		execve(info->command, info->line_tab, info->env);
+		if (info->line_tab[0] != NULL && execve(info->command, info->line_tab, info->env) == -1)
+		 	// if (execve(info->line_tab[0], info->line_tab, info->env) == -1)
+			if (((execve(info->line_tab[0], info->line_tab, info->env) == -1)))
+			{
+				// printf("\n%s\n", info->command);
+				write(2, "minishell: command not found: ", 31);
+				write(2, info->line_tab[0], ft_strlen(info->line_tab[0]));
+				write(2, "\n", 1);
+			}
 	}
 	wait(&child_pid);
 	return (info);
@@ -100,9 +106,11 @@ int		main(int ac, char **av, char **env)
 	info->env = env;
 	while (42)
 	{
-		ft_putstr("\033[1;31m[");
+		ft_putstr("\033[0;32m[");
+		ft_putstr(get_env(info->env, "USER"));
+		ft_putstr("]* \033[0m\033[0;34m*[");
 		ft_putstr(get_env(info->env, "PWD"));
-		ft_putstr("]\t\033[1;36m8\033[0m\033[0;35m======\033[0m\033[1;31m=>\033[0m");
+		ft_putstr("]\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
 		if (get_next_line(0, &(info->line)) != 0)
 			info = exe(info);
 	}
