@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 18:04:42 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 21:10:29 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ char	*get_env(char **env, char *elem)
 t_info		*get_command(t_info *info, char **env)
 {
 	char	*path;
+	int		i;
 
+	i = 0;
 	info->line = ft_strtrim(info->line);
+	info->line = remove_char(info->line, '\t');
 	info->line_tab = ft_strsplit(info->line, ' ');
 	path = get_env(env, "PATH");
 	info->command = ft_get_path(path, info->line_tab[0]);
@@ -75,25 +78,44 @@ t_info		*exe(t_info *info)
 
 	//on duplique le processus avec fork
 	info = get_command(info, info->env);
+	if (info->line[0] == '\0')
+		return (info);
 	if (builtin(info) == 1)
 		return (info);
-	child_pid = fork();
-	if (child_pid < 0)
-		perror("fork");
-	else if (child_pid == 0)
+	if ((child_pid = fork()) == 0)
 	{
 		if (info->line_tab[0] != NULL && execve(info->command, info->line_tab, info->env) == -1)
-		 	// if (execve(info->line_tab[0], info->line_tab, info->env) == -1)
+		{
 			if (((execve(info->line_tab[0], info->line_tab, info->env) == -1)))
 			{
-				// printf("\n%s\n", info->command);
 				write(2, "minishell: command not found: ", 31);
 				write(2, info->line_tab[0], ft_strlen(info->line_tab[0]));
 				write(2, "\n", 1);
+				exit(1);
 			}
+		}
 	}
-	wait(&child_pid);
+	else if (child_pid != -1)
+	{
+		signal(SIGINT, sig_handler);
+		wait(&child_pid);
+	}
 	return (info);
+}
+
+void	exec_cmd(t_info *info)
+{
+	while (42)
+	{
+		ft_putstr("\033[0;32m[");
+		ft_putstr(get_env(info->env, "USER"));
+		ft_putstr("]* \033[0m\033[0;34m*[");
+		ft_putstr(get_env(info->env, "PWD"));
+		ft_putstr("]\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
+		signal(SIGINT, sig_hand_emp);
+		if (get_next_line(0, &(info->line)) != 0)
+			info = exe(info);
+	}
 }
 
 int		main(int ac, char **av, char **env)
@@ -104,15 +126,6 @@ int		main(int ac, char **av, char **env)
 
 	info = init_info();
 	info->env = env;
-	while (42)
-	{
-		ft_putstr("\033[0;32m[");
-		ft_putstr(get_env(info->env, "USER"));
-		ft_putstr("]* \033[0m\033[0;34m*[");
-		ft_putstr(get_env(info->env, "PWD"));
-		ft_putstr("]\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
-		if (get_next_line(0, &(info->line)) != 0)
-			info = exe(info);
-	}
+	exec_cmd(info);
 	return (0);
 }

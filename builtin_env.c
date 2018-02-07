@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 17:47:34 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 17:15:27 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void		env_line(t_info *info, char *elem)
 		}
 		line++;
 	}
-	free(str);
 }
 
 void		builtin_env_one(t_info *info)
@@ -75,7 +74,6 @@ t_info		*get_env_num(t_info *info, char *elem, char *new_elem)
 char		**new_env(char **env, char *elem, char *new_elem, char *test)
 {
 	char	**str;
-	char *tmp;
 	int		line;
 
 	line = 0;
@@ -84,15 +82,15 @@ char		**new_env(char **env, char *elem, char *new_elem, char *test)
 		str = ft_strsplit(env[line], '=');
 		if (ft_strcmp(str[0], elem) == 0)
 		{
-			tmp = env[line];
+			// tmp = env[line];
 			env[line] = ft_strdup(elem);
-			free(tmp);
-			tmp = env[line];
+			// free(tmp);
+			// tmp = env[line];
 			env[line] = ft_strjoin(elem, "=");
-			free(tmp);
-			tmp = env[line];
+			// free(tmp);
+			// tmp = env[line];
 			env[line] = ft_strjoin(env[line], new_elem);
-			free(tmp);
+			// free(tmp);
 			return (env);
 		}
 		line++;

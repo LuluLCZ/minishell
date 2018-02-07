@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 19:30:45 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 20:56:19 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <curses.h>
+# include <ncurses.h>
+# include <termios.h>
 
 # define BUFF_SIZE 4
 # define EOL '\n'
@@ -61,6 +64,7 @@ void				bi_echo(t_info *info);
 void				opt_env(t_info *info);
 void				bi_setenv(t_info *info);
 void				bi_unsetenv(t_info *info);
-
+void				sig_handler(int sig);
+void				sig_hand_emp(int sig);
 
 #endif

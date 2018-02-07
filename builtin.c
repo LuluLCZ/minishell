@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 20:49:30 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 21:10:24 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,7 @@ int			perm(char *path)
 	int				i;
 
 	if (stat(path, &fstat) == -1)
-	{
-		// write(2, "cd: no such file or directory: ", 31);
-		// write(2, path, ft_strlen(path));
-		// write(2, "\n", 1);
 		i = -1;
-	}
 	else
 		i = ((fstat.st_mode & S_IRGRP) ? 1 : 0);
 	return (i);
@@ -64,15 +59,19 @@ void		builtin_cd(t_info *info)
 	char	buf[512];
 	DIR		*dir;
 	char	*tmp;
-	// char	*new_tmp;
 
 	getcwd(buf, 512);
 	dir = opendir(info->line_tab[1]);
 	if (info->line_tab[1] == NULL || (ft_strcmp(info->line_tab[1], "~")) == 0)
 	{
-		info = get_env_num(info, "OLDPWD", buf);
-		chdir(get_env(info->env, "HOME"));
-		info= get_env_num(info, "PWD", get_env(info->env, "HOME"));
+		if (ft_strcmp(get_env(info->env, "HOME"), "NULL") != 0)
+		{
+			info = get_env_num(info, "OLDPWD", buf);
+			chdir(get_env(info->env, "HOME"));
+			info= get_env_num(info, "PWD", get_env(info->env, "HOME"));
+		}
+		else
+			write(2, "$HOME doesn't exist, add it with setenv.\n", 41);
 	}
 	else if (ft_strcmp(info->line_tab[1], "/") == 0)
 	{
@@ -83,28 +82,33 @@ void		builtin_cd(t_info *info)
 	else if (ft_strcmp(info->line_tab[1], "-") == 0)
 	{
 		tmp = get_env(info->env, "OLDPWD");
-		if (perm(tmp) == 0)
+		if (ft_strcmp(tmp, "NULL") != 0)
 		{
-			write(2, "cd: permission denied: ", 23);
-			write(2, tmp, ft_strlen(tmp));
-			write(2, "\n", 1);
-		}
-		else
-		{
-			dir = opendir(tmp);
-			if (dir != NULL)
+			if (perm(tmp) == 0)
 			{
-				info = get_env_num(info, "PWD", tmp);
-				info = get_env_num(info, "OLDPWD", buf);
-				chdir(tmp);
-			}
-			else
-			{
-				write(2, "cd: no such file or directory: ", 31);
+				write(2, "cd: permission denied: ", 23);
 				write(2, tmp, ft_strlen(tmp));
 				write(2, "\n", 1);
 			}
+			else
+			{
+				dir = opendir(tmp);
+				if (dir != NULL)
+				{
+					info = get_env_num(info, "PWD", tmp);
+					info = get_env_num(info, "OLDPWD", buf);
+					chdir(tmp);
+				}
+				else
+				{
+					write(2, "cd: no such file or directory: ", 31);
+					write(2, tmp, ft_strlen(tmp));
+					write(2, "\n", 1);
+				}
+			}
 		}
+		else
+			write(2, "$OLDPWD doesn't exist, add it with setenv.\n", 43);
 	}
 	else if (dir == NULL)
 	{
@@ -159,12 +163,21 @@ void		builtin_cd(t_info *info)
 		}
 		else
 		{
-			tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
+			if (info->line_tab[1][0] != '/')
+			{
+				tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
+			}
+			else
+			{
+				tmp = ft_strdup(info->line_tab[1]);
+				info = get_env_num(info, "PWD", tmp);
+			}
 			info = get_env_num(info, "OLDPWD", buf);
 			getcwd(buf, 512);
-			chdir(ft_strjoin(tmp, info->line_tab[1]));
+			chdir((info->line_tab[1][0] != '/') ? ft_strjoin(tmp, info->line_tab[1]) : tmp);
 			getcwd(buf, 512);
-			info = get_env_num(info, "PWD", buf);
+			(info->line_tab[1][0] != '/') ? info = get_env_num(info, "PWD", buf) : 0;
+			// info = get_env_num(info, "PWD", buf);
 		}
 	}
 	dir == NULL ? 0 : closedir(dir);

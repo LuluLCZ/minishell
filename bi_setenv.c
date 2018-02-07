@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:06:35 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 17:26:22 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 17:09:27 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_info		*set_env(t_info *info, char *elem, char *new_elem, int i)
 
 void		bi_setenv(t_info *info)
 {
-	// char	**elem;
 	int		i;
 	int		j;
 	

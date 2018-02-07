@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:29:08 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 17:39:09 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/07 16:08:14 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,30 @@
 t_info		*bi_unset(t_info *info, char *elem)
 {
 	char	**str;
+	char	**nenv;
 	int		line;
 	int		i;
 
 	line = 0;
+	i = 0;
+	if (!(nenv = (char **)malloc(sizeof(char *) * 100)))
+		return (NULL);
 	while (info->env[line])
 	{
 		str = ft_strsplit(info->env[line], '=');
 		if (ft_strcmp(str[0], elem) == 0)
 		{
-			i = line;
-			while (info->env[i])
-			{
-				if (info->env[i + 1] != NULL)
-					info->env[i] = ft_strdup(info->env[i + 1]);
-				i++;
-			}
-			info->env[i] = NULL;
-			return (info);
+			line++;
 		}
-		line++;
+		else
+		{
+			nenv[i] = ft_strdup(info->env[line]);
+			i++;
+			line++;
+		}
 	}
+	info->env = NULL;;
+	info->env = nenv;
 	return (info);
 }
 
