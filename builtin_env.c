@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/07 17:15:27 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/12 19:00:39 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ void		env_line(t_info *info, char *elem)
 	}
 }
 
-void		builtin_env_one(t_info *info)
+void		builtin_env_one(char **env)
 {
 	int		i;
 
 	i = -1;
-	while (info->env[++i])
+	while (env[++i])
 	{
-		ft_putstr(info->env[i]);
+		ft_putstr(env[i]);
 		write(1, "\n", 1);
 	}
 }
@@ -122,18 +122,30 @@ void		env_equal(t_info *info)
 	{
 		if (ft_strcmp(info->line_tab[i], "env") == 0)
 			i++;
-		else if (ft_check_char(info->line_tab[i], '=') == 0)
-		{
-			write(2, "env: ", 5);
-			write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
-			write(2, ": No such file or directory\n", 28);
-			return ;
-		}
 		else if (info->line_tab[i][0] == '=')
 		{
 			write(2, "env: ", 5);
 			write(2, info->line_tab[i] + 1, ft_strlen(info->line_tab[i] + 1));
 			write(2, ": No such file or directory\n", 28);
+			return ;
+		}
+		else if (ft_check_char(info->line_tab[i], '=') == 0)
+		{
+			info->line = NULL;
+			while (info->line_tab[i])
+			{
+				info->line = ft_strjoin(info->line, info->line_tab[i]);
+				info->line = ft_strjoin(info->line, " ");
+				if (info->line_tab[i] == NULL)
+					break ;
+				i++;
+			}
+			info->env = NULL;
+			info->env = tmp;
+			info = exe(info, 0);
+			// write(2, "env: ", 5);
+			// write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
+			// write(2, ": No such file or directory\n", 28);
 			return ;
 		}
 		else
@@ -152,17 +164,76 @@ void		env_equal(t_info *info)
 	free(tmp[i]);
 }
 
-void		opt_env(t_info *info)
+void		env_i(t_info *info)
 {
-	int		i;
+	// pid_t		child_pid;
+	int			i;
+	int			j;
+	char		*tmp;
 
 	i = 1;
+	if  (!(info->new_en = (char **)malloc(sizeof(char *) * 512)))
+		return ;
+	while (info->line_tab[i] && ft_strcmp(info->line_tab[i], "-i") == 0)
+		i++;
+	j = 0;
+	while (info->line_tab[i] && ft_check_char(info->line_tab[i], '=') != 0)
+	{
+		info->new_en[j] = ft_strdup(info->line_tab[i]);
+		j++;
+		i++;
+	}
+	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
+	{
+		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
+			break ;
+		else
+			i++;
+	}
+	if (info->line_tab[i] == NULL)
+	{
+		builtin_env_one(info->new_en);
+		return ;
+	}
+
+	info->new_en[j] = NULL;
+	// info = get_command(info, new_env, i);
+	info->line = NULL;
+	while (info->line_tab[i])
+	{
+		tmp = info->line;
+		info->line = ft_strjoin(info->line, info->line_tab[i]);
+		info->line = ft_strjoin(info->line, " ");
+		free(tmp);
+		if (info->line_tab[i] == NULL)
+			break ;
+		i++;
+	}
+	info->env = info->new_en;
+	info = exe(info, 1);
+}
+
+void		opt_env(t_info *info)
+{
+	info->env_n = info->env;	
 	if (info->line_tab[1] == NULL)
-		builtin_env_one(info);
+		builtin_env_one(info->env);
 	else if (ft_strcmp(info->line_tab[1], "-u") == 0)
 		env_line(info, info->line_tab[2]);
+	else if (ft_strcmp(info->line_tab[1], "-i") == 0)
+	{
+		info->env_n = info->env;
+		info->env = NULL;
+		env_i(info);
+		free(info->env);
+		info->env = info->env_n;
+	}
 	else
+	{
+		info->env_n = info->env;
 		env_equal(info);
-	// else if (ft_strcmp(info->line_tab[1], "-i") == 0)
-		// env_opt_i(info);
+		// free(info->env);
+		info->env = info->env_n;
+	}
+	info->env = info->env_n;
 }

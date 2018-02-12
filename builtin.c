@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/07 21:10:24 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/12 11:51:39 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,10 @@ void		builtin_cd(t_info *info)
 	dir == NULL ? 0 : closedir(dir);
 }
 
-int		builtin(t_info *info)
+int		builtin(t_info *info, int i)
 {
+	(void)i;
+	
 	if (info->line_tab != NULL && info->line_tab[0] != NULL)
 	{
 		if (ft_strcmp(info->line_tab[0], "cd") == 0)

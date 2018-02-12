@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 17:20:42 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/05 17:10:46 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/12 15:39:36 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,34 @@ void		bi_echo(t_info *info)
 	while (info->line_tab[i])
 	{
 		j = 0;
-		while (info->line_tab[i][j])
+		if (info->line_tab[i][0] == '$')
 		{
-			if (info->line_tab[i][j] == '\\')
-				j++;
-			if (info->line_tab[i][j] == '\\' && ft_isascii(info->line_tab[i][j + 1]))
-			{
-				ft_putchar(info->line_tab[i][j]);
-				j++;
-			}
-			if (info->line_tab[i][j] == '"' && info->line_tab[i][j - 1] != '\\')
-				j++;
+			if (ft_strcmp(get_env(info->env, info->line_tab[i] + 1), "NULL") == 0);
 			else
-			{
-				ft_putchar(info->line_tab[i][j]);
-				j++;
-			}
+				ft_putstr(get_env(info->env, info->line_tab[i] + 1));
+			i++;
 		}
-		i++;
+		else
+		{
+			while (info->line_tab[i][j])
+			{
+				if (info->line_tab[i][j] == '\\')
+					j++;
+				if (info->line_tab[i][j] == '\\' && ft_isascii(info->line_tab[i][j + 1]))
+				{
+					ft_putchar(info->line_tab[i][j]);
+					j++;
+				}
+				if (info->line_tab[i][j] == '"' && info->line_tab[i][j - 1] != '\\')
+					j++;
+				else
+				{
+					ft_putchar(info->line_tab[i][j]);
+					j++;
+				}
+			}
+			i++;
+		}
 		if (info->line_tab[i])
 			write(1, " ", 1);
 	}
