@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/12 11:51:39 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/13 17:14:29 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ int		builtin(t_info *info, int i)
 		{
 			free(info);
 			exit(EXIT_SUCCESS);
-			return (1);
+			return (-1);
 		}
 		else if (ft_strcmp(info->line_tab[0], "env") == 0)
 		{

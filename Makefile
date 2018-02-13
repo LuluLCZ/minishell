@@ -6,7 +6,7 @@
 #    By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 11:29:27 by llacaze           #+#    #+#              #
-#    Updated: 2018/02/07 13:38:03 by llacaze          ###   ########.fr        #
+#    Updated: 2018/02/13 14:20:25 by llacaze          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC = 		main.c \
 			bi_echo.c\
 			bi_setenv.c\
 			bi_unsetenv.c\
-			signal.c
+			signal.c\
+			# builtine_cd_one.c
 
 OBJ = $(SRC:.c=.o)
 

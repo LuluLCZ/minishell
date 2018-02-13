@@ -6,7 +6,7 @@
 #    By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/09 16:14:07 by llacaze           #+#    #+#              #
-#    Updated: 2018/02/07 13:32:14 by llacaze          ###   ########.fr        #
+#    Updated: 2018/02/13 18:44:50 by llacaze          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ INCDIR =	includes
 
 SRC =   ft_atoi.c			\
 		ft_remove_char.c	\
+		ft_free_tab.c		\
 		ft_count_char.c		\
 		ft_check_double.c	\
 		ft_bzero.c			\

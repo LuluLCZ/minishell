@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:58:55 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/02 17:15:14 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/13 20:05:09 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_info		*init_info(void)
 	info->prev = NULL;
 	info->command = NULL;
 	info->line = NULL;
-	info->line_tab = NULL;
+	// info->line_tab = NULL;2
 	info->next = NULL;
 	return (info);
 }
@@ -58,24 +58,8 @@ t_info		*go_begin(t_info *info)
 
 void		free_info(t_info *info)
 {
-	t_info *tmp;
-
-	info = go_begin(info);
-	while (info)
-	{
-		if (info->next)
-			tmp = info->next;
+	if (ft_strcmp(info->command, "NULL") != 0)
 		ft_strdel(&info->command);
-		ft_strdel(&info->line);
-		ft_memdel((void **)info->line_tab);
-		if (info->next)
-		{
-			free(info);
-			info = tmp;
-			tmp = NULL;
-		}
-		else
-			break ;
-	}
-	free(info);
+	free(info->line);
+	free_tab(info->line_tab);
 }

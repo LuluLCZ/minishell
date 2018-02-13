@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/12 19:00:39 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/13 17:16:25 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ void		env_equal(t_info *info)
 			}
 			info->env = NULL;
 			info->env = tmp;
-			info = exe(info, 0);
+			if (ft_strcmp(info->line_tab[i], "cd") != 0)
+				i = exe(info, 0);
 			// write(2, "env: ", 5);
 			// write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
 			// write(2, ": No such file or directory\n", 28);
@@ -195,7 +196,7 @@ void		env_i(t_info *info)
 		builtin_env_one(info->new_en);
 		return ;
 	}
-
+	j = i;
 	info->new_en[j] = NULL;
 	// info = get_command(info, new_env, i);
 	info->line = NULL;
@@ -210,7 +211,10 @@ void		env_i(t_info *info)
 		i++;
 	}
 	info->env = info->new_en;
-	info = exe(info, 1);
+	if (ft_strcmp(info->line_tab[j], "cd") != 0)
+		 i = exe(info, 1);
+	else
+		return ;
 }
 
 void		opt_env(t_info *info)
@@ -232,7 +236,7 @@ void		opt_env(t_info *info)
 	{
 		info->env_n = info->env;
 		env_equal(info);
-		// free(info->env);
+		free(info->env);
 		info->env = info->env_n;
 	}
 	info->env = info->env_n;
