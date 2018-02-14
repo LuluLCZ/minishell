@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/24 14:53:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/03 17:50:15 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 20:16:13 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int		ft_check_buf(char **buf, char *stock, char **line)
 int		ft_free(char **buf, char **line, char *stock, const int fd)
 {
 	if (ft_check_buf(&buf[fd], stock, line) == 1)
+	{
+		free(buf);
+		free(stock);
 		return (1);
+	}
 	else if (ft_check_buf(&buf[fd], stock, line) == 0 && ft_strlen(buf[fd]) > 0)
 	{
 		*line = ft_strdup(buf[fd]);
@@ -63,6 +67,7 @@ int		ft_free(char **buf, char **line, char *stock, const int fd)
 		return (1);
 	}
 	ft_strdel(&stock);
+	free(buf);
 	return (0);
 }
 

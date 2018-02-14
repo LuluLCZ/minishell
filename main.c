@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 20:07:48 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 20:24:24 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,25 @@ char	*ft_get_path(char *str, char *command)
 	i = -1;
 	tab = ft_strsplit(str, ':');
 	free(str);
-	while (tab[++i])
+	while (tab[++i] != NULL)
 	{
 		tmp = ft_strjoin(tab[i], "/");
 		tmpp = ft_strjoin(tmp, command);
-		free(tmp);
-		free(tab[i]);
+		ft_strdel(&tab[i]);
 		tab[i] = ft_strdup(tmpp);
-		free(tmpp);
+		ft_strdel(&tmpp);
 		if (access(tab[i], F_OK) == 0)
 		{
+			free(tmp);
 			tmp = ft_strdup(tab[i]);
 			free_tab(tab);
+			tab = NULL;
 			return (tmp);
 		}
+		free(tmp);
+		free(tmpp);
 	}
 	free_tab(tab);
-	// ft_strdel(&str);
 	return ("NULL");
 }
 
@@ -70,14 +72,17 @@ t_info		*get_command(t_info *info, char **env, int j)
 	int		i;
 	char	*tmp;
 	i = 0;
+	(void)j;
 
-	tmp = info->line;
-	info->line = ft_strtrim(info->line);
-	free(tmp);
+	tmp = ft_strtrim(info->line);
+	if (info->line)
+		ft_strdel(&info->line);
+	info->line = ft_strdup(tmp);
+	ft_strdel(&tmp);
 	info->line = remove_char(info->line, '\t');
 	info->line_tab = ft_strsplit(info->line, ' ');
 	path = get_env(env, "PATH");
-	info->command = ft_get_path(path, info->line_tab[j]);
+	info->command = ft_get_path(path, info->line_tab[0]);
 	return (info);
 }
 
@@ -88,10 +93,26 @@ int			exe(t_info *info, int i)
 	j = 0;
 	//on duplique le processus avec fork
 	info = get_command(info, info->env, 0);
+	printf("\n%s\n", info->line);
 	if (info->line[0] == '\0')
+	{
+		if (info->command)
+			free(info->command);
+		free_tab(info->line_tab);
 		return (0);
-	if ((j = builtin(info, i)) == 1 || j == -1)
-		return (j);
+	}
+	
+	
+	if (builtin(info, i) == 1)
+	{
+		// if (info->command)
+		// 	free(info->command);
+		// if (info->line)
+		// 	free(info->line);
+		// if (info->line_tab)
+		// 	free_tab(info->line_tab);
+		return (0);
+	}
 	if ((child_pid = fork()) == 0)
 	{
 		if (info->line_tab[0] != NULL && execve(info->command, info->line_tab, info->env) == -1)
@@ -119,18 +140,22 @@ void	exec_cmd(t_info *info, char **env)
 	int		i;
 	(void)env;
 	char	*tmp;
-	char	buf[4096 + 1];
+	char	buf[4096];
 
 	i = 0;
 	while (42)
 	{
 		tmp = getcwd(buf, 4096);
-		ft_putstr("\033[0;32m[\033[0m\033[0;34m*[");
+		ft_putstr("\033[0;32m[\033[0m\033[0;34m*");
 		ft_putstr(tmp);
-		ft_putstr("]\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
+		ft_putstr("]*\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
 		signal(SIGINT, sig_hand_emp);
-		if (get_next_line(0, &(info->line)) != 0)
+		if (get_next_line(0, &tmp) > 0)
+		{
+			info->line = tmp;
+			free(tmp);
 			i = exe(info, 0);
+		}
 		if (i == -1)
 			break ;
 	}
@@ -149,9 +174,6 @@ int		main(int ac, char **av, char **env)
 		return (-1);
 	while (env[++i])
 		info->env[i] = ft_strdup(env[i]);
-	// info->env_n = env;
 	exec_cmd(info, env);
-	free(info->env);
-	free(info->env_n);
 	return (0);
 }

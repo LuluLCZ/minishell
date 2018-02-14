@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 17:20:42 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 15:23:27 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 19:10:18 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,28 @@
 
 int			bi_echo_sec(t_info *info, int i, int j)
 {
+	char	*tmp;
+
 	if (j == 0)
 	{
-		if (ft_strcmp(get_env(info->env, "HOME"), "NULL") == 0);
-			else
-				ft_putstr(get_env(info->env, "HOME"));
+		tmp = get_env(info->env, "HOME");
+		if (ft_strcmp(tmp, "NULL") == 0);
+		else
+			ft_putstr(tmp);
 		i++;
+		free(tmp);
 		return (i);
 	}
 	else if (j == 1)
 	{
+		tmp = get_env(info->env, info->line_tab[i] + 1);
 		if (info->line_tab[i][1] == '\0')
 			ft_putchar(info->line_tab[i][0]);
-		if (ft_strcmp(get_env(info->env, info->line_tab[i] + 1), "NULL") == 0);
+		if (ft_strcmp(tmp, "NULL") == 0);
 		else
-			ft_putstr(get_env(info->env, info->line_tab[i] + 1));
+			ft_putstr(tmp);
 		i++;
+		free(tmp);
 		return (i);
 	}
 	return (i);
@@ -61,13 +67,8 @@ void		bi_echo(t_info *info)
 		{
 			while (info->line_tab[i][j])
 			{
-				if (info->line_tab[i][j] == '\\')
-					;
 				if (info->line_tab[i][j] == '\\' && ft_isascii(info->line_tab[i][j + 1]))
-				{
 					ft_putchar(info->line_tab[i][j]);
-				}
-				if (info->line_tab[i][j] == '"' && info->line_tab[i][j - 1] != '\\');
 				else
 					ft_putchar(info->line_tab[i][j]);
 				j++;

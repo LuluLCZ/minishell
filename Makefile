@@ -6,13 +6,13 @@
 #    By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 11:29:27 by llacaze           #+#    #+#              #
-#    Updated: 2018/02/13 14:20:25 by llacaze          ###   ########.fr        #
+#    Updated: 2018/02/14 16:54:07 by llacaze          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = clang
+CC = gcc
 
 OPTIONS = -c
 

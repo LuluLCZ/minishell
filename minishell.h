@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 17:12:44 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 19:13:06 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include <ncurses.h>
 # include <termios.h>
 
-# define BUFF_SIZE 4
+# define BUFF_SIZE 1
 # define EOL '\n'
 
 typedef struct		s_info

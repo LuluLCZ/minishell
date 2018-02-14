@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 17:14:29 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 20:20:53 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char		*pwd_cwd(char *str)
 		i++;
 		j++;
 	}
-	printf("[%s]", new_str);
 	new_str[j] = '\0';
 	return (new_str);
 }
@@ -64,14 +63,19 @@ void		builtin_cd(t_info *info)
 	dir = opendir(info->line_tab[1]);
 	if (info->line_tab[1] == NULL || (ft_strcmp(info->line_tab[1], "~")) == 0)
 	{
-		if (ft_strcmp(get_env(info->env, "HOME"), "NULL") != 0)
+		tmp = get_env(info->env, "HOME");
+		if (ft_strcmp(tmp, "NULL") != 0)
 		{
 			info = get_env_num(info, "OLDPWD", buf);
-			chdir(get_env(info->env, "HOME"));
-			info= get_env_num(info, "PWD", get_env(info->env, "HOME"));
+			chdir(tmp);
+			info= get_env_num(info, "PWD", tmp);
+			free(tmp);
 		}
 		else
+		{
+			free(tmp);
 			write(2, "$HOME doesn't exist, add it with setenv.\n", 41);
+		}
 	}
 	else if (ft_strcmp(info->line_tab[1], "/") == 0)
 	{
@@ -89,6 +93,7 @@ void		builtin_cd(t_info *info)
 				write(2, "cd: permission denied: ", 23);
 				write(2, tmp, ft_strlen(tmp));
 				write(2, "\n", 1);
+				free(tmp);
 			}
 			else
 			{
@@ -98,12 +103,14 @@ void		builtin_cd(t_info *info)
 					info = get_env_num(info, "PWD", tmp);
 					info = get_env_num(info, "OLDPWD", buf);
 					chdir(tmp);
+					free(tmp);
 				}
 				else
 				{
 					write(2, "cd: no such file or directory: ", 31);
 					write(2, tmp, ft_strlen(tmp));
 					write(2, "\n", 1);
+					free(tmp);
 				}
 			}
 		}
@@ -118,12 +125,14 @@ void		builtin_cd(t_info *info)
 			write(2, "cd: permission denied: ", 23);
 			write(2, info->line_tab[1], ft_strlen(info->line_tab[1]));
 			write(2, "\n", 1);
+			free(tmp);
 		}
 		else
 		{
 			write(2, "cd: no such file or directory: ", 31);
 			write(2, info->line_tab[1], ft_strlen(info->line_tab[1]));
 			write(2, "\n", 1);
+			free(tmp);
 		}
 	}
 	else
@@ -152,32 +161,37 @@ void		builtin_cd(t_info *info)
 				info = get_env_num(info, "OLDPWD", info->line_tab[1]);
 				getcwd(buf, 512);
 				info = get_env_num(info, "PWD", buf);
+				free(tmp);
 			}
 			else
 			{
-				chdir(get_env(info->env, "OLDPWD"));
+				tmp = get_env(info->env, "OLDPWD");
+				chdir(tmp);
+				free(tmp);
+				tmp = get_env(info->env, "PWD");
 				getcwd(buf, 512);
-				info = get_env_num(info, "OLDPWD", get_env(info->env, "PWD"));
+				info = get_env_num(info, "OLDPWD", tmp);
 				info = get_env_num(info, "PWD", buf);
+				free(tmp);
 			}
 		}
 		else
 		{
+			char	*tmpp;
 			if (info->line_tab[1][0] != '/')
-			{
 				tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
-			}
 			else
 			{
 				tmp = ft_strdup(info->line_tab[1]);
 				info = get_env_num(info, "PWD", tmp);
 			}
 			info = get_env_num(info, "OLDPWD", buf);
-			getcwd(buf, 512);
-			chdir((info->line_tab[1][0] != '/') ? ft_strjoin(tmp, info->line_tab[1]) : tmp);
+			tmpp = ft_strjoin(tmp, info->line_tab[1]);
+			chdir((info->line_tab[1][0] != '/') ? tmpp : tmp);
+			// free(tmp);
+			// free(tmpp);
 			getcwd(buf, 512);
 			(info->line_tab[1][0] != '/') ? info = get_env_num(info, "PWD", buf) : 0;
-			// info = get_env_num(info, "PWD", buf);
 		}
 	}
 	dir == NULL ? 0 : closedir(dir);
@@ -203,7 +217,7 @@ int		builtin(t_info *info, int i)
 		{
 			free(info);
 			exit(EXIT_SUCCESS);
-			return (-1);
+			// return (-1);
 		}
 		else if (ft_strcmp(info->line_tab[0], "env") == 0)
 		{
@@ -220,6 +234,7 @@ int		builtin(t_info *info, int i)
 			bi_setenv(info);
 			return (1);
 		}
+		
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 18:43:48 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 18:44:35 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 18:44:18 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	free_tab(char **str)
 
 	i = -1;
 	while (str[++i])
-	{
 		free(str[i]);
-	}
 	free(str);
 }

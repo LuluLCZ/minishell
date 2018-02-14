@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/13 17:16:25 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/14 19:48:34 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_info		*get_env_num(t_info *info, char *elem, char *new_elem)
 {
 	char	**str;
 	int		line;
+	char	*tmp;
 
 	line = 0;
 	while (info->env[line])
@@ -59,12 +60,19 @@ t_info		*get_env_num(t_info *info, char *elem, char *new_elem)
 		str = ft_strsplit(info->env[line], '=');
 		if (ft_strcmp(str[0], elem) == 0)
 		{
+			free(info->env[line]);
 			info->env[line] = ft_strdup(elem);
+			tmp = info->env[line];
 			info->env[line] = ft_strjoin(elem, "=");
+			free(tmp);
+			tmp = info->env[line];
 			info->env[line] = ft_strjoin(info->env[line], new_elem);
+			free(tmp);
+			// free_tab(str);
 			info->repl = 1;
 			return (info);
 		}
+		free_tab(str);
 		line++;
 	}
 	info->repl = 0;
@@ -135,14 +143,17 @@ void		env_equal(t_info *info)
 			while (info->line_tab[i])
 			{
 				info->line = ft_strjoin(info->line, info->line_tab[i]);
-				info->line = ft_strjoin(info->line, " ");
+				if (info->line_tab[i + 1] != NULL)
+					info->line = ft_strjoin(info->line, " ");
 				if (info->line_tab[i] == NULL)
 					break ;
 				i++;
 			}
 			info->env = NULL;
 			info->env = tmp;
-			if (ft_strcmp(info->line_tab[i], "cd") != 0)
+			free_tab(info->line_tab);
+			info->line_tab = ft_strsplit(info->line, ' ');
+			if (ft_strcmp(info->line_tab[0], "cd") != 0)
 				i = exe(info, 0);
 			// write(2, "env: ", 5);
 			// write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
@@ -198,7 +209,6 @@ void		env_i(t_info *info)
 	}
 	j = i;
 	info->new_en[j] = NULL;
-	// info = get_command(info, new_env, i);
 	info->line = NULL;
 	while (info->line_tab[i])
 	{
@@ -211,10 +221,8 @@ void		env_i(t_info *info)
 		i++;
 	}
 	info->env = info->new_en;
-	if (ft_strcmp(info->line_tab[j], "cd") != 0)
-		 i = exe(info, 1);
-	else
-		return ;
+	i = exe(info, 1);
+	return ;
 }
 
 void		opt_env(t_info *info)
