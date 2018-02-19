@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 13:28:53 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/14 19:15:11 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/15 14:25:26 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ char	*remove_char(char *str, char c)
 			dst[j] = ' ';
 			while (str[i + 1] == c)
 				i++;
+			j++;
 		}
 		else
+		{
 			dst[j] = str[i];
-		j++;
+			j++;
+		}
 	}
 	dst[j] = '\0';
 	free(str);

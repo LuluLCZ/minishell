@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/14 20:20:53 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/19 17:21:41 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char		*pwd_cwd(char *str)
 	j = 0;
 	while (str[i])
 	{
-		write(1, "\ns\n", 3);
 		if (str[i] == ' ')
 		{
 			new_str[j] = '\\';
@@ -104,6 +103,8 @@ void		builtin_cd(t_info *info)
 					info = get_env_num(info, "OLDPWD", buf);
 					chdir(tmp);
 					free(tmp);
+					closedir(dir);
+					return ;
 				}
 				else
 				{
@@ -111,6 +112,7 @@ void		builtin_cd(t_info *info)
 					write(2, tmp, ft_strlen(tmp));
 					write(2, "\n", 1);
 					free(tmp);
+					return ;
 				}
 			}
 		}
@@ -188,8 +190,8 @@ void		builtin_cd(t_info *info)
 			info = get_env_num(info, "OLDPWD", buf);
 			tmpp = ft_strjoin(tmp, info->line_tab[1]);
 			chdir((info->line_tab[1][0] != '/') ? tmpp : tmp);
-			// free(tmp);
-			// free(tmpp);
+			ft_strdel(&tmp);
+			ft_strdel(&tmpp);
 			getcwd(buf, 512);
 			(info->line_tab[1][0] != '/') ? info = get_env_num(info, "PWD", buf) : 0;
 		}

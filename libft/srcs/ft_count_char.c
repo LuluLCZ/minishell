@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 16:18:39 by llacaze           #+#    #+#             */
-/*   Updated: 2018/01/24 17:33:35 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/19 18:48:16 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ int		ft_check_char(char *str, char c)
 
 	count = 0;
 	i = -1;
-	while (str[++i])
-		if (str[i] == c)
-			count++;
+	if (str)
+		while (str[++i])
+			if (str[i] == c)
+				count++;
 	return (count);
 }

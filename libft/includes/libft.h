@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 20:53:25 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/14 16:18:37 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/19 19:27:53 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_check_char(char *str, char c);
+char				**copy_tab(char **env, char **oenv);
+char				**copy_tab_o(char **tmp);
+void				free_tab_o(char **str);
 char				*ft_check_double(char *str);
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
@@ -73,7 +76,7 @@ char				*ft_strrchr(const char *s, int c);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
-char				*ft_strtrim(char const *s);
+char				*ft_strtrim(char *s);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 void				ft_swap(void *s1, void *s2);

@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:29:08 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/07 16:08:14 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/15 16:25:10 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_info		*bi_unset(t_info *info, char *elem)
 
 	line = 0;
 	i = 0;
-	if (!(nenv = (char **)malloc(sizeof(char *) * 100)))
+	if (!(nenv = (char **)malloc(sizeof(char *) * 100000)))
 		return (NULL);
 	while (info->env[line])
 	{

@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 22:06:58 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/14 18:38:26 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/15 16:54:45 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 #include <stdlib.h>
 #include "../includes/libft.h"
 
-static char		*detect_after(char *s2, char const *s, size_t a, size_t i)
+static char		*detect_after(char *s, size_t a, size_t i)
 {
 	size_t		j;
+	char		*s2;
 
 	j = 0;
+	i = ft_strlen(s);
 	while (s[i - 1] == ' ' || s[i - 1] == '\t' || s[i - 1] == '\n' || \
 			s[i - 1] == '\0')
 		i--;
@@ -32,7 +34,7 @@ static char		*detect_after(char *s2, char const *s, size_t a, size_t i)
 	return (s2);
 }
 
-char			*ft_strtrim(char const *s)
+char			*ft_strtrim(char *s)
 {
 	char		*s2;
 	size_t		i;
@@ -44,19 +46,18 @@ char			*ft_strtrim(char const *s)
 	i = 0;
 	if (s)
 	{
-		if (!(s2 = (char *)malloc(sizeof(char) * ((i - a) + 1))))
-			return (NULL);
 		while ((s[i] == ' ' || s[i] == '\t' || s[i] == '\n') && s[i])
 			i++;
 		if (s[i] == '\0')
 		{
+			if (!(s2 = (char *)malloc(sizeof(char) * ((i - a) + 1))))
+				return (NULL);
 			s2[a] = s[i];
 			return (s2);
 		}
 		a = i;
-		i = ft_strlen(s);
-		s2 = detect_after(s2, s, a, i);
+		s2 = detect_after(s, a, i);
 		return (s2);
 	}
-	return (NULL);
+	return (ft_strdup("NULL"));
 }
