@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/20 11:53:06 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 12:03:23 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,7 @@ t_info		*get_env_num(t_info *info, char *elem, char *new_elem)
 		str = ft_strsplit(info->env[line], '=');
 		if (ft_strcmp(str[0], elem) == 0)
 		{
-			ft_strdel(&info->env[line]);
-			info->env[line] = ft_strdup(elem);
-			tmp = info->env[line];
-			info->env[line] = ft_strjoin(elem, "=");
-			free(tmp);
-			tmp = info->env[line];
-			info->env[line] = ft_strjoin(info->env[line], new_elem);
-			free(tmp);
+			info->env[line] = new_line(info->env[line], elem, new_elem);
 			free_tab(str);
 			info->repl = 1;
 			return (info);
@@ -91,14 +84,7 @@ char		**new_env(char **env, char *elem, char *new_elem, char *test)
 		str = ft_strsplit(env[line], '=');
 		if (str && str[0] && ft_strcmp(str[0], elem) == 0)
 		{
-			free(env[line]);
-			env[line] = ft_strdup(elem);
-			tmp = env[line];
-			env[line] = ft_strjoin(elem, "=");
-			free(tmp);
-			tmp = env[line];
-			env[line] = ft_strjoin(env[line], new_elem);
-			free(tmp);
+			env[line] = new_line(env[line], elem, new_elem);
 			free_tab(str);
 			return (env);
 		}

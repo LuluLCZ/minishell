@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/15 16:41:24 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 12:02:20 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ char				*get_env(char **env, char *elem);
 t_info				*get_command(t_info *info, char **env, int j);
 char				*ft_get_path(char *str, char *command);
 int					exe(t_info *info, int i, char *tmp);
+char				*new_line(char *str, char *elem, char *new_elem);
 
 #endif

@@ -6,11 +6,26 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:06:35 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/20 11:19:37 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 12:05:39 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char		*new_line(char *str, char *elem, char *new_elem)
+{
+	char	*tmp;
+
+	free(str);
+	str = ft_strdup(elem);
+	tmp = str;
+	str = ft_strjoin(elem, "=");
+	free(tmp);
+	tmp = str;
+	str = ft_strjoin(str, new_elem);
+	free(tmp);
+	return (str);
+}
 
 void		usage_setenv(void)
 {
@@ -31,16 +46,8 @@ t_info		*set_env(t_info *info, char *elem, char *new_elem, int i)
 		{
 			if (i != 0)
 			{
-				ft_strdel(&info->env[line]);
-				info->env[line] = ft_strdup(elem);
-				tmp = info->env[line];
-				info->env[line] = ft_strjoin(elem, "=");
-				free(tmp);
-				tmp = info->env[line];
-				info->env[line] = ft_strjoin(info->env[line], new_elem);
-				free(tmp);
+				info->env[line] = new_line(info->env[line], elem, new_elem);
 				free_tab(str);
-				info->repl = 1;
 				return (info);
 			}
 			free_tab(str);
@@ -49,14 +56,7 @@ t_info		*set_env(t_info *info, char *elem, char *new_elem, int i)
 		free_tab(str);
 		line++;
 	}
-	ft_strdel(&info->env[line]);
-	info->env[line] = ft_strdup(elem);
-	tmp = info->env[line];
-	info->env[line] = ft_strjoin(elem, "=");
-	free(tmp);
-	tmp = info->env[line];
-	info->env[line] = ft_strjoin(info->env[line], new_elem);
-	free(tmp);
+	info->env[line] = new_line(info->env[line], elem, new_elem);
 	info->env[line + 1] = NULL;
 	return (info);
 }
