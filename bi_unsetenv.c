@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:29:08 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/15 16:25:10 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 11:27:05 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,19 @@ t_info		*bi_unset(t_info *info, char *elem)
 	{
 		str = ft_strsplit(info->env[line], '=');
 		if (ft_strcmp(str[0], elem) == 0)
-		{
 			line++;
-		}
 		else
 		{
 			nenv[i] = ft_strdup(info->env[line]);
 			i++;
 			line++;
+			nenv[i] = NULL;
 		}
+		free_tab(str);
 	}
-	info->env = NULL;;
-	info->env = nenv;
+	free_tab(info->env);
+	info->env = copy_tab(info->env, nenv);
+	free_tab_o(nenv);
 	return (info);
 }
 

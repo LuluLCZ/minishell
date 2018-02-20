@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 19:32:58 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 11:53:06 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ t_info		*get_env_num(t_info *info, char *elem, char *new_elem)
 			info->env[line] = ft_strdup(elem);
 			tmp = info->env[line];
 			info->env[line] = ft_strjoin(elem, "=");
-			ft_strdel(&tmp);
+			free(tmp);
 			tmp = info->env[line];
 			info->env[line] = ft_strjoin(info->env[line], new_elem);
-			ft_strdel(&tmp);
+			free(tmp);
 			free_tab(str);
 			info->repl = 1;
 			return (info);
@@ -129,10 +129,11 @@ void		env_equal(t_info *info)
 			i++;
 		else if (info->line_tab[i][0] == '=')
 		{
-			write(2, "env: ", 5);
-			write(2, info->line_tab[i] + 1, ft_strlen(info->line_tab[i] + 1));
-			write(2, ": No such file or directory\n", 28);
-			// free_tab(tmp);
+			write(2, "env: setenv ", 12);
+			write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
+			write(2, ": Invalid argument\n", 19);
+			free_tab(tmp);
+			free_tab(info->env_n);
 			return ;
 		}
 		line = i;
@@ -160,14 +161,11 @@ void		env_equal(t_info *info)
 		{
 			builtin_env_one(tmp);
 			free_tab_o(tmp);
-			write(1, "s", 1);
 			free_tab(info->env_n);
-			// free_info(info);
 			return ;
 		}
 		if (ft_check_char(info->line_tab[i], '=') == 0)
 		{
-			write(1, "SSDSS", 5);
 			line = i;
 			ft_strdel(&info->line);
 			while (info->line_tab[i])
@@ -187,7 +185,6 @@ void		env_equal(t_info *info)
 					break ;
 				i++;
 			}
-			printf("\n[[[%s]]]\n", info->line_tab[i]);
 			free_tab(info->env);
 			info->env = copy_tab(info->env, tmp);
 			free_tab(tmp);
@@ -204,22 +201,13 @@ void		env_equal(t_info *info)
 				free_tab(info->env_n);
 				return ;
 			}
-			// 	free_tab(info->line_tab);
-			// free_tab(info->env);
-			// info->env = copy_tab(info->env, info->env_n);
-			// free_tab(info->env_n);
 			return ;
 		}
 	}
-	// free_tab(info->env);
-	// info->env = copy_tab(info->env, info->env_n);
-	// free_tab(info->env_n);
-	// free_tab(tmp);
 }
 
 void		env_i(t_info *info)
 {
-	// pid_t		child_pid;
 	int			i;
 	int			j;
 	char		*tmp;
@@ -252,7 +240,6 @@ void		env_i(t_info *info)
 		free_tab(info->env);
 		info->env = copy_tab(info->env, info->new_en);
 		free_tab(info->new_en);
-		// free_tab(info->new_en);
 		return ;
 	}
 	j = i;
@@ -282,24 +269,12 @@ void		env_i(t_info *info)
 
 void		opt_env(t_info *info)
 {
-	// info->env_n = copy_tab(info->env_n, info->env);
 	if (info->line_tab[1] == NULL)
 		builtin_env_one(info->env);
 	else if (ft_strcmp(info->line_tab[1], "-u") == 0)
 		env_line(info, info->line_tab[2]);
 	else if (ft_strcmp(info->line_tab[1], "-i") == 0)
-	{
 		env_i(info);
-		// info->env = NULL;
-		// if (info->env[0])
-		// 	free_tab(info->env);
-		// info->env = info->env_n;
-	}
 	else
-	{
 		env_equal(info);
-		// free_tab(info->new_en);
-	}
-	// info->env = copy_tab(info->env, info->env_n);
-	// free_tab(info->env);
 }

@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 18:47:11 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 11:52:24 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	exec_cmd(t_info *info, char **env)
 	char	buf[4096];
 
 	i = 6;
+	tmp = NULL;
 	while (42)
 	{
 		tmp = getcwd(buf, 4096);
@@ -144,9 +145,7 @@ void	exec_cmd(t_info *info, char **env)
 		ft_putstr("]*\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
 		signal(SIGINT, sig_hand_emp);
 		if (get_next_line(0, &info->line) > 0)
-		{
 			exe(info, i, tmp);
-		}
 		i++;
 	}
 }

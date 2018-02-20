@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 17:21:41 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/20 11:56:20 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,11 @@ void		builtin_cd(t_info *info)
 	}
 	else if (dir == NULL)
 	{
+		char *tmpp;
 		tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
-		if (perm(ft_strjoin(tmp, info->line_tab[1])) == 0)
+		tmpp = tmp;
+		tmp = ft_strjoin(tmp, info->line_tab[1]);
+		if (perm(tmp) == 0)
 		{
 			write(2, "cd: permission denied: ", 23);
 			write(2, info->line_tab[1], ft_strlen(info->line_tab[1]));
@@ -136,10 +139,11 @@ void		builtin_cd(t_info *info)
 			write(2, "\n", 1);
 			free(tmp);
 		}
+		free(tmpp);
 	}
 	else
 	{
-		if ((dir = opendir(buf)) == NULL && info->line_tab[1][0] == '.' && info->line_tab[1][1] == '.')
+		if (dir == NULL && info->line_tab[1][0] == '.' && info->line_tab[1][1] == '.')
 		{
 			int		i;
 			int		j;
@@ -181,19 +185,22 @@ void		builtin_cd(t_info *info)
 		{
 			char	*tmpp;
 			if (info->line_tab[1][0] != '/')
-				tmp = (ft_strcmp(buf, "/") == 0) ? ft_strdup("/") : ft_strjoin(buf, "/");
+			{
+				tmp = ft_strjoin(buf, "/");
+				tmpp = tmp;
+				tmp = ft_strjoin(tmp, info->line_tab[1]);
+				free(tmpp);
+			}
 			else
 			{
 				tmp = ft_strdup(info->line_tab[1]);
 				info = get_env_num(info, "PWD", tmp);
 			}
 			info = get_env_num(info, "OLDPWD", buf);
-			tmpp = ft_strjoin(tmp, info->line_tab[1]);
-			chdir((info->line_tab[1][0] != '/') ? tmpp : tmp);
-			ft_strdel(&tmp);
-			ft_strdel(&tmpp);
+			chdir(tmp);
+			free(tmp);
 			getcwd(buf, 512);
-			(info->line_tab[1][0] != '/') ? info = get_env_num(info, "PWD", buf) : 0;
+			info = get_env_num(info, "PWD", buf);
 		}
 	}
 	dir == NULL ? 0 : closedir(dir);
