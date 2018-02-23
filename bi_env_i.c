@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 16:37:59 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/23 16:50:50 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:46:16 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,71 +14,114 @@
 
 int			compare(t_info *info, int i)
 {
-	
+	while (info->line_tab[i] != NULL &&
+	(ft_strcmp("env", info->line_tab[i]) == 0 ||
+		ft_strcmp("-i", info->line_tab[i]) == 0))
+	{
+		if ((ft_strcmp("env", info->line_tab[i]) != 0 &&
+			ft_strcmp("-i", info->line_tab[i]) != 0))
+			break ;
+		else
+			i++;
+	}
+	return (i);
 }
 
-void		env_i(t_info *info)
+t_info		*new_info_line(t_info *info, int i, int j)
 {
-	int			i;
-	int			j;
-	char		*tmp;
+	char	*tmp;
 
-	i = 1;
-	info->new_en = copy_tab(info->new_en, info->env);
-	free_tab(info->env);
-	if (!(info->env = (char **)malloc(sizeof(char *) * 5121)))
-		return ;
-	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
-	{
-		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
-			break ;
-		else
-			i++;
-	}
-	j = 0;
-	while (info->line_tab[i] && ft_check_char(info->line_tab[i], '=') != 0)
-	{
-		info->env[j] = ft_strdup(info->line_tab[i]);
-		j++;
-		i++;
-	}
-	info->env[j] = NULL;
-	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
-	{
-		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
-			break ;
-		else
-			i++;
-	}
-	if (info->line_tab[i] == NULL)
-	{
-		builtin_env_one(info->env);
-		free_tab(info->env);
-		info->env = copy_tab(info->env, info->new_en);
-		free_tab(info->new_en);
-		return ;
-	}
-	j = i;
-	ft_strdel(&info->line);
 	while (info->line_tab[i])
 	{
 		if (i != j)
 			tmp = info->line;
 		info->line = ft_strjoin(info->line, info->line_tab[i]);
 		if (i != j)
-			ft_strdel(&tmp);
-		tmp = info->line;
-		info->line = ft_strjoin(info->line, " ");
-		free(tmp);
-		if (info->line_tab[i] == NULL)
+			free(tmp);
+		if (info->line_tab[i + 1] != NULL)
+		{
+			tmp = info->line;
+			info->line = ft_strjoin(info->line, " ");
+			free(tmp);
+		}
+		if (info->line_tab[i + 1] == NULL)
 			break ;
 		i++;
 	}
-	free_tab(info->line_tab);
-	ft_strdel(&info->command);
-	i = exe(info, 5, "NULL", 0);
-	free_tab(info->env);
-	info->env = copy_tab(info->env, info->new_en);
-	free_tab(info->new_en);
+	return (info);
+}
+
+void		aff_free(t_info *info, int i, char **tmp)
+{
+	if (i == 1)
+	{
+		builtin_env_one(info->env);
+		free_tab(info->env);
+		info->env = copy_tab(info->env, info->new_en);
+		free_tab(info->new_en);
+	}
+	else if (i == 2)
+	{
+		builtin_env_one(tmp);
+		free_tab_o(tmp);
+		free_tab(info->env_n);
+	}
 	return ;
+}
+
+t_info		*free_get_exe(t_info *info, int i, int line, char **tmp)
+{
+	info = new_info_line(info, i, line);
+	free_tab(info->line_tab);
+	info->line_tab = ft_strsplit(info->line, ' ');
+	i = 0;
+	free_tab(info->env);
+	info->env = copy_tab(info->env, tmp);
+	free_tab(tmp);
+	if (builtin(info, i) == 1)
+	{
+		free_tab(info->line_tab);
+		if (info->command)
+			free(info->command);
+		info = get_command(info, info->env, 0);
+	}
+	else if (info->line_tab[0] && ft_strcmp(info->line_tab[0], "cd") != 0)
+	{
+		free_tab(info->line_tab);
+		if (info->command)
+			free(info->command);
+		i = exe(info, 4, "NULL", 1);
+	}
+	free_tab(info->env);
+	info->env = copy_tab(info->env, info->env_n);
+	free_tab(info->env_n);
+	return (info);
+}
+
+void		env_i(t_info *info)
+{
+	char	**tmp;
+	int		line;
+	int		i;
+
+	i = 1;
+	info->env_n = copy_tab(info->env_n, info->env);
+	if (!(tmp = (char **)malloc(sizeof(char *) * 5120)))
+		return ;
+	i = compare(info, i);
+	line = i;
+	if (info->line_tab == NULL ||
+		(info->line_tab[i] && info->line_tab[i][0] == '='))
+	{
+		info->line_tab == NULL ? aff_free(info, 2, tmp)
+			: usage_setenv(i, info, 2, tmp);
+		return ;
+	}
+	while (info->line_tab[i] && ft_check_char(info->line_tab[i], '=') != 0)
+	{
+		if (info->line_tab[i] != NULL)
+			tmp = new_tab(i, info, tmp);
+		i++;
+	}
+	info = check_i(info, tmp, i, line);
 }

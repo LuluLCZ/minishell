@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:06:35 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/23 14:33:07 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 19:07:26 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,21 @@ char		*new_line(char *str, char *elem, char *new_elem)
 	return (str);
 }
 
-void		usage_setenv(void)
+void		usage_setenv(int i, t_info *info, int j, char **tmp)
 {
-	write(2, "Invalid argument : \"put first arg\" \"put the value\" \"put 0 if you wanna overwrite it 1 if you don't\"\n", 100);
+	if (j == 1)
+	{
+		write(2, "Invalid argument : \"put first arg\" \"put the value\"", 50);
+		write(2, " \"put 0\" if you wanna overwrite it 1 if you don't\n", 50);
+	}
+	else if (j == 2)
+	{
+		write(2, "env: setenv ", 12);
+		write(2, info->line_tab[i], ft_strlen(info->line_tab[i]));
+		write(2, ": Invalid argument\n", 19);
+		free_tab(tmp);
+		free_tab(info->env_n);
+	}
 }
 
 t_info		*set_env(t_info *info, char *elem, char *new_elem, int i)
@@ -64,14 +76,14 @@ void		bi_setenv(t_info *info)
 {
 	int		i;
 	int		j;
-	
+
 	i = 1;
 	j = 0;
 	while (info->line_tab[i])
 	{
 		if (ft_check_char(info->line_tab[1], '=') > 0)
 		{
-			usage_setenv();
+			usage_setenv(0, info, 1, NULL);
 			return ;
 		}
 		if (info->line_tab[i + 2] != NULL)

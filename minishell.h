@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/23 14:52:46 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:40:56 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,14 @@ t_info				*get_command(t_info *info, char **env, int j);
 char				*ft_get_path(char *str, char *command);
 int					exe(t_info *info, int i, char *tmp, int j);
 char				*new_line(char *str, char *elem, char *new_elem);
+void				env_i(t_info *info);
+void				env_equal(t_info *info);
+char				**new_env(char **env, char *elem, char *new_elem, char *test);
+void				usage_setenv(int i, t_info *info, int j, char **tmp);
+char				**new_tab(int i, t_info *info, char **tmp);
+t_info				*free_get_exe(t_info *info, int i, int line, char **tmp);
+void				aff_free(t_info *info, int i, char **tmp);
+int					compare(t_info *info, int i);
+t_info				*check_i(t_info *info, char **tmp, int i, int line);
 
 #endif

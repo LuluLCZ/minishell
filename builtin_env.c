@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/23 16:36:57 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:05:37 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ void		env_equal(t_info *info)
 			if (builtin(info, i) == 1)
 			{
 				free_tab(info->line_tab);
+				if (info->command)
+					free(info->command);
 				info = get_command(info, info->env, 0);
 				free_tab(info->env);
 				info->env = copy_tab(info->env, info->env_n);
@@ -188,7 +190,8 @@ void		env_equal(t_info *info)
 			else if (info->line_tab[0] && ft_strcmp(info->line_tab[0], "cd") != 0)
 			{
 				free_tab(info->line_tab);
-				ft_strdel(&info->command);
+				if (info->command)
+					free(info->command);
 				i = exe(info, 4, "NULL", 1);
 				free_tab(info->env);
 				info->env = copy_tab(info->env, info->env_n);
@@ -200,80 +203,80 @@ void		env_equal(t_info *info)
 	}
 }
 
-void		env_i(t_info *info)
-{
-	int			i;
-	int			j;
-	char		*tmp;
+// void		env_i(t_info *info)
+// {
+// 	int			i;
+// 	int			j;
+// 	char		*tmp;
 
-	i = 1;
-	info->new_en = copy_tab(info->new_en, info->env);
-	free_tab(info->env);
-	if (!(info->env = (char **)malloc(sizeof(char *) * 5121)))
-		return ;
-	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
-	{
-		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
-			break ;
-		else
-			i++;
-	}
-	j = 0;
-	while (info->line_tab[i] && ft_check_char(info->line_tab[i], '=') != 0)
-	{
-		info->env[j] = ft_strdup(info->line_tab[i]);
-		j++;
-		i++;
-	}
-	info->env[j] = NULL;
-	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
-	{
-		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
-			break ;
-		else
-			i++;
-	}
-	if (info->line_tab[i] == NULL)
-	{
-		builtin_env_one(info->env);
-		free_tab(info->env);
-		info->env = copy_tab(info->env, info->new_en);
-		free_tab(info->new_en);
-		return ;
-	}
-	j = i;
-	ft_strdel(&info->line);
-	while (info->line_tab[i])
-	{
-		if (i != j)
-			tmp = info->line;
-		info->line = ft_strjoin(info->line, info->line_tab[i]);
-		if (i != j)
-			ft_strdel(&tmp);
-		tmp = info->line;
-		info->line = ft_strjoin(info->line, " ");
-		free(tmp);
-		if (info->line_tab[i] == NULL)
-			break ;
-		i++;
-	}
-	// if (builtin(info, i) == 1)
-	// {
-	// 	// write(1, "s", 1);
-	// 	free_info(info);
-	// 	// return ;
-	// }
-	// else
-	// {
-		free_tab(info->line_tab);
-		ft_strdel(&info->command);
-		i = exe(info, 5, "NULL", 0);
-	// }
-	free_tab(info->env);
-	info->env = copy_tab(info->env, info->new_en);
-	free_tab(info->new_en);
-	return ;
-}
+// 	i = 1;
+// 	info->new_en = copy_tab(info->new_en, info->env);
+// 	free_tab(info->env);
+// 	if (!(info->env = (char **)malloc(sizeof(char *) * 5121)))
+// 		return ;
+// 	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
+// 	{
+// 		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
+// 			break ;
+// 		else
+// 			i++;
+// 	}
+// 	j = 0;
+// 	while (info->line_tab[i] && ft_check_char(info->line_tab[i], '=') != 0)
+// 	{
+// 		info->env[j] = ft_strdup(info->line_tab[i]);
+// 		j++;
+// 		i++;
+// 	}
+// 	info->env[j] = NULL;
+// 	while (info->line_tab[i] != NULL && (ft_strcmp("env", info->line_tab[i]) == 0 || ft_strcmp("-i", info->line_tab[i]) == 0))
+// 	{
+// 		if ((ft_strcmp("env", info->line_tab[i]) != 0 && ft_strcmp("-i", info->line_tab[i]) != 0))
+// 			break ;
+// 		else
+// 			i++;
+// 	}
+// 	if (info->line_tab[i] == NULL)
+// 	{
+// 		builtin_env_one(info->env);
+// 		free_tab(info->env);
+// 		info->env = copy_tab(info->env, info->new_en);
+// 		free_tab(info->new_en);
+// 		return ;
+// 	}
+// 	j = i;
+// 	ft_strdel(&info->line);
+// 	while (info->line_tab[i])
+// 	{
+// 		if (i != j)
+// 			tmp = info->line;
+// 		info->line = ft_strjoin(info->line, info->line_tab[i]);
+// 		if (i != j)
+// 			ft_strdel(&tmp);
+// 		tmp = info->line;
+// 		info->line = ft_strjoin(info->line, " ");
+// 		free(tmp);
+// 		if (info->line_tab[i] == NULL)
+// 			break ;
+// 		i++;
+// 	}
+// 	// if (builtin(info, i) == 1)
+// 	// {
+// 	// 	// write(1, "s", 1);
+// 	// 	free_info(info);
+// 	// 	// return ;
+// 	// }
+// 	// else
+// 	// {
+// 		free_tab(info->line_tab);
+// 		ft_strdel(&info->command);
+// 		i = exe(info, 5, "NULL", 0);
+// 	// }
+// 	free_tab(info->env);
+// 	info->env = copy_tab(info->env, info->new_en);
+// 	free_tab(info->new_en);
+// 	return ;
+// }
 
 void		opt_env(t_info *info)
 {
