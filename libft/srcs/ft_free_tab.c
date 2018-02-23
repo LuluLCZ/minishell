@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 18:43:48 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 19:32:43 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 14:55:39 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**copy_tab(char **env, char **oenv)
 	// 	free_tab(env);
 	// else if (env[0] && !env[1])
 	// 	free(env);
-	if (!(env = (char **)malloc(sizeof(char *) * 20480)))
+	if (!(env = (char **)malloc(sizeof(char *) * 2048)))
 		return (NULL);
 	while (oenv[++i])
 		env[i] = ft_strdup(oenv[i]);

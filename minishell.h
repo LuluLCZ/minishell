@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/20 12:02:20 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 14:52:46 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void				sig_hand_emp(int sig);
 char				*get_env(char **env, char *elem);
 t_info				*get_command(t_info *info, char **env, int j);
 char				*ft_get_path(char *str, char *command);
-int					exe(t_info *info, int i, char *tmp);
+int					exe(t_info *info, int i, char *tmp, int j);
 char				*new_line(char *str, char *elem, char *new_elem);
 
 #endif

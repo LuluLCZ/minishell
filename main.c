@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:06:03 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/20 11:52:24 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/23 16:19:28 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,11 @@ t_info		*get_command(t_info *info, char **env, int j)
 	return (info);
 }
 
-int			exe(t_info *info, int i, char *tmp)
+int			exe(t_info *info, int i, char *tmp, int j)
 {
 	pid_t	child_pid;
-	int		j;
 	// char	*tmpo;
-	j = -1;
+	(void)j;
 	(void)tmp;
 	//on duplique le processus avec fork
 	if (info->line[0] == '\0')
@@ -114,8 +113,6 @@ int			exe(t_info *info, int i, char *tmp)
 				write(2, info->line_tab[0], ft_strlen(info->line_tab[0]));
 				write(2, "\n", 1);
 				exit(1);
-				// free_info(info);
-				// return (3);
 		}
 	}
 	else if (child_pid != -1)
@@ -145,7 +142,7 @@ void	exec_cmd(t_info *info, char **env)
 		ft_putstr("]*\033[0m\xe2\x86\x92\e[31m\xe2\x98\x85\033[0m ");
 		signal(SIGINT, sig_hand_emp);
 		if (get_next_line(0, &info->line) > 0)
-			exe(info, i, tmp);
+			exe(info, i, tmp, 0);
 		i++;
 	}
 }
