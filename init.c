@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:58:55 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 11:19:30 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:30:49 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_info		*init_info(void)
 	info->prev = NULL;
 	info->command = NULL;
 	info->line = NULL;
+	info->do_ret = 0;
 	info->line_tab = NULL;
 	info->next = NULL;
 	return (info);

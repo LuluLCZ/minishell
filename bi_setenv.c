@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:06:35 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/23 19:07:26 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/24 15:38:29 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,4 @@ void		bi_setenv(t_info *info)
 		info = set_env(info, info->line_tab[i], info->line_tab[i + 1], j);
 		i = i + 3;
 	}
-	builtin_env_one(info->env);
 }

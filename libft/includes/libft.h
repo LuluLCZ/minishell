@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 20:53:25 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/19 19:27:53 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:16:22 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_check_char(char *str, char c);
+char				**alloc_tab(int size);
 char				**copy_tab(char **env, char **oenv);
 char				**copy_tab_o(char **tmp);
 void				free_tab_o(char **str);
