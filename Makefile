@@ -6,7 +6,7 @@
 #    By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 11:29:27 by llacaze           #+#    #+#              #
-#    Updated: 2018/02/24 18:34:53 by llacaze          ###   ########.fr        #
+#    Updated: 2018/02/26 13:18:21 by llacaze          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRC = 		main.c \
 			bi_env_i.c\
 			utils.c\
 			utils_two.c\
-			builtin_cd_one.c
+			builtin_cd_one.c\
+			bi_cd_two.c
 
 OBJ = $(SRC:.c=.o)
 

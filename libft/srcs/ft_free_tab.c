@@ -6,14 +6,14 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 18:43:48 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 18:16:09 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:40:47 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include <stdio.h>
 
-void	free_tab_o(char **str)
+void		free_tab_o(char **str)
 {
 	int		i;
 
@@ -24,7 +24,7 @@ void	free_tab_o(char **str)
 	free(str);
 }
 
-void	free_tab(char **str)
+void		free_tab(char **str)
 {
 	int		i;
 
@@ -34,11 +34,11 @@ void	free_tab(char **str)
 	free(str);
 }
 
-char	**copy_tab_o(char **tmp)
+char		**copy_tab_o(char **tmp)
 {
 	int		i;
 	char	**env;
-	
+
 	i = -1;
 	if (!(env = (char **)malloc(sizeof(char *) * 20480)))
 		return (NULL);
@@ -48,9 +48,9 @@ char	**copy_tab_o(char **tmp)
 	return (env);
 }
 
-char	**copy_tab(char **env, char **oenv)
+char		**copy_tab(char **env, char **oenv)
 {
-	int	i;
+	int		i;
 
 	i = -1;
 	if (!(env = (char **)malloc(sizeof(char *) * 2048)))

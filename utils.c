@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/23 18:30:10 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 18:30:23 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:23:49 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_info		*check_i(t_info *info, char **tmp, int i, int line)
 	{
 		info->do_ret = 1;
 		aff_free(info, 2, tmp);
+		return (info);
 	}
 	else if (ft_check_char(info->line_tab[i], '=') == 0)
 	{
@@ -48,6 +49,7 @@ t_info		*check_i(t_info *info, char **tmp, int i, int line)
 		line = i;
 		ft_strdel(&info->line);
 		info = free_get_exe(info, i, line, tmp);
+		return (info);
 	}
 	info->do_ret = 0;
 	return (info);

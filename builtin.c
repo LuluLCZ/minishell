@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:42:43 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 19:15:03 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:41:16 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,23 @@ int			perm(char *path)
 
 int			builtin(t_info *info, int i)
 {
-	(void)i;
+	i = 0;
 	if (info->line_tab != NULL && info->line_tab[0] != NULL)
 	{
-		(ft_strcmp(info->line_tab[0], "cd") == 0) ? builtin_cd(info) : 0;
-		(ft_strcmp(info->line_tab[0], "echo") == 0) ? bi_echo(info) : 0;
+		(ft_strcmp(info->line_tab[0], "cd") == 0) ? builtin_cd(info) : i++;
+		(ft_strcmp(info->line_tab[0], "echo") == 0) ? bi_echo(info) : i++;
 		if (ft_strcmp(info->line_tab[0], "exit") == 0)
 		{
-			free(info);
+			free_info(info);
 			exit(EXIT_SUCCESS);
 		}
-		(ft_strcmp(info->line_tab[0], "env") == 0) ? opt_env(info) : 0;
-		(ft_strcmp(info->line_tab[0], "unsetenv") == 0) ? bi_unsetenv(info) : 0;
-		(ft_strcmp(info->line_tab[0], "setenv") == 0) ? bi_setenv(info) : 0;
+		(ft_strcmp(info->line_tab[0], "env") == 0) ? opt_env(info) : i++;
+		(ft_strcmp(info->line_tab[0], "unsetenv") == 0) ?
+			bi_unsetenv(info) : i++;
+		(ft_strcmp(info->line_tab[0], "setenv") == 0) ? bi_setenv(info) : i++;
 	}
-	return (0);
+	if (i == 5)
+		return (0);
+	else
+		return (1);
 }

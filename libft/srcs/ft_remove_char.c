@@ -6,12 +6,13 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 13:28:53 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/15 14:25:26 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:40:01 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include <stdio.h>
+
 char	*remove_char(char *str, char c)
 {
 	char	*dst;

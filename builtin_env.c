@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 20:37:45 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 18:08:06 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:41:35 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,10 @@ void		env_equal(t_info *info)
 void		opt_env(t_info *info)
 {
 	if (info->line_tab[1] == NULL)
+	{
 		builtin_env_one(info->env);
+		return ;
+	}
 	else if (ft_strcmp(info->line_tab[1], "-u") == 0)
 		env_line(info, info->line_tab[2]);
 	else if (ft_strcmp(info->line_tab[1], "-i") == 0)

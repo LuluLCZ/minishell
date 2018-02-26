@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 15:04:15 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 19:17:17 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:39:42 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int					exe(t_info *info, int i);
 char				*new_line(char *str, char *elem, char *new_elem);
 void				env_i(t_info *info);
 void				env_equal(t_info *info);
-char				**new_env(char **env, char *elem, char *new_elem, char *test);
+char				**new_env(char **env, char *elem, char
+							*new_elem, char *test);
 void				usage_setenv(int i, t_info *info, int j, char **tmp);
 char				**new_tab(int i, t_info *info, char **tmp);
 t_info				*free_get_exe(t_info *info, int i, int line, char **tmp);

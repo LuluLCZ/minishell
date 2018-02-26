@@ -6,7 +6,7 @@
 /*   By: llacaze <llacaze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 20:53:25 by llacaze           #+#    #+#             */
-/*   Updated: 2018/02/24 18:16:22 by llacaze          ###   ########.fr       */
+/*   Updated: 2018/02/26 13:41:03 by llacaze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,5 @@ char				*ft_strdup_free(char *src);
 char				*remove_char(char *str, char c);
 void				free_tab(char **str);
 char				*ft_strjoin_free(char *s1, char *s2);
-
 
 #endif
